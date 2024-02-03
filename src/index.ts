@@ -23,6 +23,14 @@ const client = new SapphireClient({
 		GatewayIntentBits.GuildVoiceStates,
 		GatewayIntentBits.MessageContent
 	],
+	presence: {
+		activities: [
+			{
+				name: 'Warframe',
+				type: 0
+			}
+		]
+	},
 	partials: [Partials.Channel],
 	loadMessageCommandListeners: true
 });
