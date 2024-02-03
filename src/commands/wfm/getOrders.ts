@@ -21,27 +21,29 @@ export default class serverStatusCommand extends Command {
 
 	public override async chatInputRun(interaction: ChatInputCommandInteraction) {
 		const itemName = interaction.options.getString('itemname');
-		WFM.getSellOrders(itemName!)
-			.then((itemInfo) => {
-				const responseEmbed = new EmbedBuilder()
-					.setTitle(`Sell Orders ➜ ${itemName}`)
-					.setColor(blue)
-					.setFooter({ text: 'Cephalon Creth' })
-					.setTimestamp();
 
-				for (const item of itemInfo) {
-					responseEmbed.addFields({
-						name: `${item.user.ingame_name}`,
-						value: `Price: ${item.platinum} Platinum \n Quantity: ${item.quantity}`
-					});
-					responseEmbed.setImage(`http://warframe.market/static/assets/${item.item.items_in_set[0].thumb}`);
-				}
+		try {
+			const itemInfo = await WFM.getSellOrders(itemName!);
 
-				interaction.deferReply();
-				interaction.editReply({ embeds: [responseEmbed] });
-			})
-			.catch((err) => {
-				interaction.reply({ content: `${err}`, ephemeral: true });
-			});
+			const responseEmbed = new EmbedBuilder()
+				.setTitle(`Sell Orders ➜ ${itemName}`)
+				.setColor(blue)
+				.setFooter({ text: 'Cephalon Creth' })
+				.setTimestamp();
+
+			for (const item of itemInfo) {
+				responseEmbed.addFields({
+					name: `${item.user.ingame_name}`,
+					value: `Price: ${item.platinum} Platinum \n Quantity: ${item.quantity}`
+				});
+				responseEmbed.setImage(`http://warframe.market/static/assets/${item.item.items_in_set[0].thumb}`);
+			}
+
+			interaction.deferReply();
+			await interaction.editReply({ embeds: [responseEmbed] });
+		} catch (err) {
+			interaction.reply({ content: 'Ungültige Eingabe', ephemeral: true });
+			console.error(err);
+		}
 	}
 }
