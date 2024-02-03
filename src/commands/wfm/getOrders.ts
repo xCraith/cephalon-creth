@@ -41,7 +41,7 @@ export default class serverStatusCommand extends Command {
 			}
 			await interaction.editReply({ embeds: [responseEmbed] });
 		} catch (err) {
-			await interaction.editReply({ content: `API ERROR: ${err}` });
+			await interaction.editReply({ content: `${err}` });
 		}
 	}
 }
