@@ -13,6 +13,9 @@ export function handleFailure(error: AxiosError<unknown>): never {
 	} else {
 		console.error('API Error - Request Setup Issues');
 	}
-
-	throw new Error('API request failed', error);
+	if (error.response && error.response.status === 404) {
+		throw new Error('Invalid Item', error);
+	} else {
+		throw new Error('API request failed', error);
+	}
 }
