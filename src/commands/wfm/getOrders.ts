@@ -20,7 +20,6 @@ export default class serverStatusCommand extends Command {
 	}
 
 	public override async chatInputRun(interaction: ChatInputCommandInteraction) {
-		await interaction.deferReply();
 		const itemName = interaction.options.getString('itemname');
 		WFM.getSellOrders(itemName!)
 			.then((itemInfo) => {
@@ -28,7 +27,6 @@ export default class serverStatusCommand extends Command {
 					.setTitle(`Sell Orders ➜ ${itemName}`)
 					.setColor(blue)
 					.setFooter({ text: 'Cephalon Creth' })
-
 					.setTimestamp();
 
 				for (const item of itemInfo) {
@@ -39,10 +37,8 @@ export default class serverStatusCommand extends Command {
 					responseEmbed.setImage(`http://warframe.market/static/assets/${item.item.items_in_set[0].thumb}`);
 				}
 
-				return { embed: responseEmbed };
-			})
-			.then((response) => {
-				interaction.editReply({ embeds: [response.embed] });
+				interaction.deferReply();
+				interaction.editReply({ embeds: [responseEmbed] });
 			})
 			.catch((err) => {
 				interaction.reply({ content: `${err}`, ephemeral: true });
