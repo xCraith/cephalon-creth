@@ -21,6 +21,7 @@ export default class serverStatusCommand extends Command {
 
 	public override async chatInputRun(interaction: ChatInputCommandInteraction) {
 		try {
+			await interaction.deferReply();
 			const itemName = interaction.options.getString('itemname');
 			const itemInfo = await WFM.getSellOrders(itemName!);
 
@@ -38,7 +39,6 @@ export default class serverStatusCommand extends Command {
 				});
 				responseEmbed.setImage(`http://warframe.market/static/assets/${item.item.items_in_set[0].thumb}`);
 			}
-			await interaction.deferReply();
 			await interaction.editReply({ embeds: [responseEmbed] });
 		} catch (err) {
 			await interaction.editReply({ content: `API ERROR: ${err}` });
