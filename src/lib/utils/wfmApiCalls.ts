@@ -32,7 +32,7 @@ export class WFM {
 
 	private static filterOrders(orders: Order[]): Order[] {
 		return orders
-			.filter((order) => order.user.status === 'ingame')
+			.filter((order) => order.user.status.toLowerCase() === 'ingame')
 			.sort((a, b) => a.platinum - b.platinum)
 			.slice(0, 5)
 			.map((order) => ({
