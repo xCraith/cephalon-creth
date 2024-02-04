@@ -32,13 +32,14 @@ export class WFM {
 
 	private static filterOrders(orders: Order[], modRank?: number): Order[] {
 		const filteredOrders = orders
-			.filter((order) => order.user.status.toLowerCase() === 'ingame' && order.order_type.toLowerCase() === 'sell')
+			.filter(
+				(order) =>
+					order.user.status.toLowerCase() === 'ingame' &&
+					order.order_type.toLowerCase() === 'sell' &&
+					(modRank === undefined || (order.mod_rank !== undefined && order.mod_rank === modRank))
+			)
 			.sort((a, b) => a.platinum - b.platinum)
-			.slice(0, 5)
-			.map((order) => ({
-				...order,
-				mod_rank: typeof order.mod_rank !== 'undefined' ? order.mod_rank : modRank !== undefined ? 0 : undefined
-			})) as Order[];
+			.slice(0, 5);
 
 		return filteredOrders;
 	}

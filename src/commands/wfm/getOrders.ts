@@ -26,11 +26,11 @@ export default class serverStatusCommand extends Command {
 			const itemName = interaction.options.getString('itemname');
 			let modRank = interaction.options.getNumber('modrank');
 			let itemInfo;
-			if (modRank == null) {
+			if (modRank && modRank <= 0) {
 				modRank = 0;
 				itemInfo = await WFM.getSellOrders(itemName!);
 			} else {
-				itemInfo = await WFM.getSellOrders(itemName!, modRank);
+				itemInfo = await WFM.getSellOrders(itemName!, modRank!);
 			}
 
 			const responseEmbed = new EmbedBuilder()
