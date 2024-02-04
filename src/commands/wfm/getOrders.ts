@@ -15,7 +15,8 @@ export default class serverStatusCommand extends Command {
 			command
 				.setName(this.name)
 				.setDescription(this.description)
-				.addStringOption((option) => option.setName('itemname').setDescription('name of the item').setRequired(true));
+				.addStringOption((option) => option.setName('itemname').setDescription('name of the item').setRequired(true))
+				.addNumberOption((option) => option.setName('modrank').setDescription('rank of the mod'));
 		});
 	}
 
@@ -23,10 +24,18 @@ export default class serverStatusCommand extends Command {
 		try {
 			await interaction.deferReply();
 			const itemName = interaction.options.getString('itemname');
-			const itemInfo = await WFM.getSellOrders(itemName!);
+			let modRank = interaction.options.getNumber('modrank');
+			let itemInfo;
+			if (modRank == null) {
+				modRank = 0;
+				itemInfo = await WFM.getSellOrders(itemName!);
+			} else {
+				itemInfo = await WFM.getSellOrders(itemName!, modRank);
+			}
 
 			const responseEmbed = new EmbedBuilder()
 				.setTitle(`Sell Orders ➜ ${itemName}`)
+				.setDescription(`Rank: ${modRank}`)
 				.setColor(blue)
 				.setFooter({ text: 'Cephalon Creth' })
 
