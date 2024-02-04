@@ -9,6 +9,7 @@ interface Order {
 	last_update: string;
 	subtype: string;
 	visible: boolean;
+	mod_rank: number;
 	user: {
 		id: string;
 		ingame_name: string;
