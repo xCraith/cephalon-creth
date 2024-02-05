@@ -36,7 +36,7 @@ export class WFM {
 				(order) =>
 					order.user.status.toLowerCase() === 'ingame' &&
 					order.order_type.toLowerCase() === 'sell' &&
-					(modRank === undefined || (order.mod_rank !== undefined && order.mod_rank === modRank))
+					(modRank === undefined || (order.mod_rank !== undefined ? order.mod_rank === modRank : order.mod_rank === undefined))
 			)
 			.sort((a, b) => a.platinum - b.platinum)
 			.slice(0, 5);
